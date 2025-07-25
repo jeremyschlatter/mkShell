@@ -28,3 +28,21 @@ This creates a flake with devShells for each default system:
 ```
 
 See the [nixpkgs](https://nixos.org/manual/nixpkgs/stable/#sec-pkgs-mkShell) and [nix.dev](https://nix.dev/tutorials/first-steps/declarative-shell.html) documentation on the nix function `mkShell`. This flake is a wrapper around that function, and you can use the same attributes (`packages`, `shellHook`, etc).
+
+You can also use the noCC variant:
+
+```nix
+{
+  inputs.mkShell.url = "github:jeremyschlatter/mkShell";
+  outputs =
+    { mkShell, nixpkgs, ... }:
+    mkShell.noCC nixpkgs (pkgs: {
+      packages = with pkgs; [
+        rustup
+        zlib
+      ];
+    });
+}
+```
+
+This internally calls `mkShellNoCC` rather than `mkShell`.
