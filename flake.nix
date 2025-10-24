@@ -12,9 +12,14 @@
             system:
             let
               pkgs = nixpkgs.legacyPackages.${system};
+              args = mkShellArgs pkgs;
             in
             {
-              devShell = (mkShellFn pkgs) (mkShellArgs pkgs);
+              devShell = (mkShellFn pkgs) (
+                if builtins.isList args
+                then { packages = args; }
+                else args
+              );
             }
           );
       };

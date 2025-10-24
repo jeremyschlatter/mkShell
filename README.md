@@ -12,7 +12,22 @@ Example usage:
         rustup
         zlib
       ];
+      shellHook = "export DEBUG=1";
     });
+}
+```
+
+Or, if you just have a list of packages:
+
+```nix
+{
+  inputs.mkShell.url = "github:jeremyschlatter/mkShell";
+  outputs =
+    { mkShell, nixpkgs, ... }:
+    mkShell nixpkgs (pkgs: with pkgs; [
+      rustup
+      zlib
+    ]);
 }
 ```
 
