@@ -12,7 +12,10 @@
             system:
             let
               pkgs = nixpkgs.legacyPackages.${system};
-              args = mkShellArgs pkgs;
+              args = let x = mkShellArgs pkgs; in
+                if builtins.isFunction x
+                then x system
+                else x;
             in
             {
               devShell = (mkShellFn pkgs) (
